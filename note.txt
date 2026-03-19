@@ -1,0 +1,8 @@
+/cmd                //Entry Point
+/internal           // Internal Workflow
+  /entity           // Business domain model
+  /usecase          // Interface & Mai Bussiness Logic
+  /repository       // Implementation of data layer Interface
+  /delivery         // Handler of Usecase
+/pkg                // Helper & utility
+/nigration          // Database Migration
