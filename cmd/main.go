@@ -2,8 +2,12 @@ package main
 
 import (
 	"log"
+	"os"
 
+	"golang-clean-arch/config"
 	"golang-clean-arch/internal/infrastructure/pgsql"
+	"golang-clean-arch/internal/usecase"
+	"golang-clean-arch/routes"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -18,12 +22,22 @@ func main() {
 
 	log.Println("ENV loaded sucessfully")
 
-	_, err = pgsql.Init()
+	pgdb, err := pgsql.Init()
 	if err != nil {
 		panic(err)
 	}
 
+	pgUserRepo := pgsql.NewUserRepoPG(pgdb)
+	authUsecase := usecase.NewAuthUsecase(pgUserRepo, os.Getenv(config.Jwtkey))
+
+	// Initialize Gin router
+	// register routes
 	r := gin.Default()
+
+	routes.RegisterRoutes(routes.RoutesConfig{
+		Router: r,
+		AuthUc: authUsecase,
+	})
 
 	log.Println("Server berjalan pada port :8080")
 	r.Run(":8080")

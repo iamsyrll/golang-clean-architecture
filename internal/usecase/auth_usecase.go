@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"errors"
+	"log"
 	"time"
 
 	"golang-clean-arch/internal/entity"
@@ -31,6 +32,7 @@ func NewAuthUsecase(repo repository.UserRepository, jwtSecret string) AuthUsecas
 func (auth *authUsecase) Login(email string, password string) (string, error) {
 	user, err := auth.repo.GetByEmail(email)
 	if err != nil {
+		log.Println(err)
 		return "", errors.New("email not found")
 	}
 
