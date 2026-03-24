@@ -1,0 +1,121 @@
+basePath: /
+definitions:
+  entity.LoginParams:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  entity.RegisterParams:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  handler.AuthResponseFailed:
+    properties:
+      error:
+        type: string
+    type: object
+  handler.AuthResponseLogin:
+    properties:
+      message:
+        type: string
+      token:
+        type: string
+    type: object
+  handler.RegisterResponse:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: syahrullah.mail@gmail.com
+    name: Clean Architecture API
+  description: This is a sample API docs auto generate using swagger and gin framework.
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Endpoint for user login
+      parameters:
+      - description: Login request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/entity.LoginParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.AuthResponseLogin'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.AuthResponseFailed'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.AuthResponseFailed'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.AuthResponseFailed'
+      summary: Login User
+      tags:
+      - Auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Endpoint for user register
+      parameters:
+      - description: Register request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/entity.RegisterParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.AuthResponseFailed'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.AuthResponseFailed'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.AuthResponseFailed'
+      security:
+      - ApiKeyAuth: []
+      summary: Register User
+      tags:
+      - Auth
+securityDefinitions:
+  ApiKeyAuth:
+    description: Description for what is this security definition being used
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
